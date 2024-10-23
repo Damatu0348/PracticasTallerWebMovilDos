@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Src.Data
 {
-    public class ApplicationDBContext
+    public class ApplicationDBContext(DbContextOptions dBContextOptions) : DbContext(dBContextOptions)
     {
         public DbSet<Cliente> Clientes { get; set; } = null!;
         public DbSet<Producto> Productos { get; set; } = null!;
