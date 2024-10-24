@@ -10,8 +10,8 @@ using api.Src.Data;
 namespace api.Src.Data.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20241024010600_firstMigration")]
-    partial class firstMigration
+    [Migration("20241024165055_dataSeederRolesProductosClientesMigrationUpdate")]
+    partial class dataSeederRolesProductosClientesMigrationUpdate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
