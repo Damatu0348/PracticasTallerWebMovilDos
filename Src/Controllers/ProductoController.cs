@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Src.Data;
+using api.Src.Dtos;
+using api.Src.Mappers;
 using api.Src.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +23,7 @@ namespace api.Src.Controllers
         [HttpGet]
         public IActionResult GetProductos()
         {
-            var productos = _context.Productos.ToList();
+            var productos = _context.Productos.ToList().Select(p => p.ToGetProductoDto());
             return Ok(productos);
         }
 
@@ -33,30 +35,31 @@ namespace api.Src.Controllers
             {
                 return NotFound("Producto NO existente.");
             }
-            return Ok(producto);
+            return Ok(producto.ToGetProductoDto());
         }
         [HttpPost]
-        public IActionResult PostProducto([FromBody] Producto producto)
+        public IActionResult PostProducto([FromBody] ProductoPostDto postProductoDto)
         {
-            _context.Productos.Add(producto);
+            var newProducto = postProductoDto.ToPostProducto();
+            _context.Productos.Add(newProducto);
             _context.SaveChanges();
-            return Ok(producto);
+            return CreatedAtAction(nameof(GetByIdProducto), new {id = newProducto.IdProducto }, newProducto.ToGetProductoDto());
         }
         [HttpPut("{id}")]
-        public IActionResult PutProductoId([FromRoute] int id, [FromBody] Producto producto)
+        public IActionResult PutProductoId([FromRoute] int id, [FromBody] ProductoPutDto putProductoDto)
         {
-            var productoUpdate = _context.Productos.FirstOrDefault(p => p.IdProducto == id);
-            if(productoUpdate == null)
+            var productoExist = _context.Productos.FirstOrDefault(p => p.IdProducto == id);
+            if(productoExist == null)
             {
                 return NotFound();
             }
-            productoUpdate.NombreProducto = producto.NombreProducto;
-            productoUpdate.TipoProducto = producto.TipoProducto;
-            productoUpdate.Precio = producto.Precio;
-            productoUpdate.StockActual = producto.StockActual;
+            productoExist.NombreProducto = putProductoDto.NombreProducto;
+            productoExist.TipoProducto = putProductoDto.TipoProducto;
+            productoExist.Precio = putProductoDto.Precio;
+            productoExist.StockActual = putProductoDto.StockActual;
 
             _context.SaveChanges();
-            return Ok(productoUpdate);
+            return Ok(productoExist);
         }
 
         [HttpDelete("{id}")]

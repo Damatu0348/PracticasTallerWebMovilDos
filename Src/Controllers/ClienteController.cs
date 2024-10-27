@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Src.Data;
+using api.Src.Dtos;
+using api.Src.Mappers;
 using api.Src.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +23,7 @@ namespace api.Src.Controllers
         [HttpGet]
         public IActionResult GetClientes()
         {
-            var clientes = _context.Clientes.Include(c => c.Role).ToList();
+            var clientes = _context.Clientes.Include(c => c.Role).ToList().Select(c => c.ToGetClienteDto());
             return Ok(clientes);
         }
 
@@ -33,41 +35,32 @@ namespace api.Src.Controllers
             {
                 return NotFound("Cliente NO existente.");
             }
-            return Ok(cliente);
+            return Ok(cliente.ToGetClienteDto());
         }
         [HttpPost]
-        public IActionResult PostCliente([FromBody] Cliente cliente)
+        public IActionResult PostCliente([FromBody] ClientePostDto postClienteDto)
         {
-            var role = _context.Roles.FirstOrDefault(r => r.IdRole == cliente.RoleId);
-            if(role == null)
-            {   
-                return BadRequest("Role no encontrado");
-            }
-            _context.Clientes.Add(cliente);
+            var newCliente = postClienteDto.ToPostClienteDto();
+            _context.Clientes.Add(newCliente);
             _context.SaveChanges();
-            return Ok(cliente);
+            return CreatedAtAction(nameof(GetByIdCliente), new {id = newCliente.IdCliente}, newCliente.ToGetClienteDto());
         }
         [HttpPut("{id}")]
-        public IActionResult PutClienteId([FromRoute] int id, [FromBody] Cliente cliente)
+        public IActionResult PutClienteId([FromRoute] int id, [FromBody] ClientePutDto putClienteDto)
         {
-            var role = _context.Roles.FirstOrDefault(r => r.IdRole == cliente.RoleId);
-            if(role == null)
-            {
-                return BadRequest("Role no encontrado");
-            }
-            var clienteUpdate = _context.Clientes.FirstOrDefault(c => c.IdCliente == id);
-            if(clienteUpdate == null)
+            var clienteExiste = _context.Clientes.FirstOrDefault(c => c.IdCliente == id);
+            if(clienteExiste == null)
             {
                 return NotFound();
             }
-            clienteUpdate.Rut = cliente.Rut;
-            clienteUpdate.NombreCliente = cliente.NombreCliente;
-            clienteUpdate.FechaNacimiento = cliente.FechaNacimiento;
-            clienteUpdate.Correo = cliente.Correo;
-            clienteUpdate.Contrasenha = cliente.Contrasenha;
+            clienteExiste.Rut = putClienteDto.Rut;
+            clienteExiste.NombreCliente = putClienteDto.NombreCliente;
+            clienteExiste.FechaNacimiento = putClienteDto.FechaNacimiento;
+            clienteExiste.Correo = putClienteDto.Correo;
+            clienteExiste.Contrasenha = putClienteDto.Contrasenha;
 
             _context.SaveChanges();
-            return Ok(clienteUpdate);
+            return Ok(clienteExiste);
 
         }
 
