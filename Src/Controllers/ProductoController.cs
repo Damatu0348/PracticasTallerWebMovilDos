@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Src.Data;
 using api.Src.Dtos;
+using api.Src.Interfaces;
 using api.Src.Mappers;
 using api.Src.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,23 +15,24 @@ namespace api.Src.Controllers
     [Route("api/[controller]")]
     public class ProductoController : ControllerBase
     {
-        private readonly ApplicationDBContext _context;
-        public ProductoController(ApplicationDBContext context)
+        private readonly IProductoRepository _productoRepository;
+        public ProductoController(IProductoRepository productoRepository)
         {
-            _context = context;
+            _productoRepository = productoRepository;
         }
 
         [HttpGet]
-        public IActionResult GetProductos()
+        public async Task<IActionResult> GetProductos()
         {
-            var productos = _context.Productos.ToList().Select(p => p.ToGetProductoDto());
-            return Ok(productos);
+            var productos = await _productoRepository.ObtenerTodosLosProductos();
+            var productoDto = productos.Select(p => p.ToGetProductoDto());
+            return Ok(productoDto);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetByIdProducto([FromRoute] int id)
+        public async Task<IActionResult> GetByIdProducto([FromRoute] int id)
         {
-            var producto = _context.Productos.FirstOrDefault(p => p.IdProducto == id);
+            var producto = await _productoRepository.ObtenerProductoById(id);
             if(producto == null)
             {
                 return NotFound("Producto NO existente.");
@@ -38,41 +40,33 @@ namespace api.Src.Controllers
             return Ok(producto.ToGetProductoDto());
         }
         [HttpPost]
-        public IActionResult PostProducto([FromBody] ProductoPostDto postProductoDto)
+        public async Task<IActionResult> PostProducto([FromBody] ProductoPostDto postProductoDto)
         {
             var newProducto = postProductoDto.ToPostProducto();
-            _context.Productos.Add(newProducto);
-            _context.SaveChanges();
+            await _productoRepository.AgregarProducto(newProducto);
             return CreatedAtAction(nameof(GetByIdProducto), new {id = newProducto.IdProducto }, newProducto.ToGetProductoDto());
         }
-        [HttpPut("{id}")]
-        public IActionResult PutProductoId([FromRoute] int id, [FromBody] ProductoPutDto putProductoDto)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> PutProductoId([FromRoute] int id, [FromBody] ProductoPutDto putProductoDto)
         {
-            var productoExist = _context.Productos.FirstOrDefault(p => p.IdProducto == id);
-            if(productoExist == null)
+            var modeloProductoModificar = await _productoRepository.ModificarProducto(id, putProductoDto);
+            if(modeloProductoModificar == null)
             {
                 return NotFound();
             }
-            productoExist.NombreProducto = putProductoDto.NombreProducto;
-            productoExist.TipoProducto = putProductoDto.TipoProducto;
-            productoExist.Precio = putProductoDto.Precio;
-            productoExist.StockActual = putProductoDto.StockActual;
-
-            _context.SaveChanges();
-            return Ok(productoExist);
+            return Ok(modeloProductoModificar.ToGetProductoDto());
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteProductoId([FromRoute] int id)
+        public async Task<IActionResult> DeleteProductoId([FromRoute] int id)
         {
-            var producto = _context.Productos.FirstOrDefault(p => p.IdProducto == id);
+            var producto = await _productoRepository.EliminarProductoById(id);
             if(producto == null)
             {
                 return NotFound("Id producto ingresado NO existente");
             }
-            _context.Productos.Remove(producto);
-            _context.SaveChanges();
-            return Ok();
+            return NoContent();
         }
     }
 }
