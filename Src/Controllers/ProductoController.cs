@@ -24,6 +24,10 @@ namespace api.Src.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProductos()
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var productos = await _productoRepository.ObtenerTodosLosProductos();
             var productoDto = productos.Select(p => p.ToGetProductoDto());
             return Ok(productoDto);
