@@ -8,5 +8,6 @@ namespace api.Src.Helpers
     public class QueryProducto
     {
         public string? TipoProducto {get; set;} = string.Empty;
+        public bool IsDescendiente {get; set;} = false;
     }
 }
