@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Src.Data;
 using api.Src.Dtos;
+using api.Src.Helpers;
 using api.Src.Interfaces;
 using api.Src.Mappers;
 using api.Src.Models;
@@ -22,13 +23,13 @@ namespace api.Src.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProductos()
+        public async Task<IActionResult> GetProductos([FromQuery] QueryProducto queryProducto)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var productos = await _productoRepository.ObtenerTodosLosProductos();
+            var productos = await _productoRepository.ObtenerTodosLosProductos(queryProducto);
             var productoDto = productos.Select(p => p.ToGetProductoDto());
             return Ok(productoDto);
         }

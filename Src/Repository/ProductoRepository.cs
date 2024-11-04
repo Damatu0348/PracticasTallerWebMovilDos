@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Src.Data;
 using api.Src.Dtos;
+using api.Src.Helpers;
 using api.Src.Interfaces;
 using api.Src.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Src.Repository
@@ -56,9 +58,14 @@ namespace api.Src.Repository
             return await _context.Productos.FindAsync(id);
         }
 
-        public async Task<List<Producto>> ObtenerTodosLosProductos()
+        public async Task<List<Producto>> ObtenerTodosLosProductos(QueryProducto queryProducto)
         {
-            return await _context.Productos.ToListAsync();
+            var productos = _context.Productos.AsQueryable();
+            if(!string.IsNullOrWhiteSpace(queryProducto.TipoProducto))
+            {
+                productos = productos.Where(p => p.TipoProducto.Contains(queryProducto.TipoProducto));
+            }
+            return await productos.ToListAsync();
         }
     }
 }
