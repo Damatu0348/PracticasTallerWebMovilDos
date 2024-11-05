@@ -17,14 +17,6 @@ namespace api.Src.Data
             {
                 var services = scope.ServiceProvider;
                 var context = services.GetRequiredService<ApplicationDBContext>();
-                if (!context.Roles.Any())
-                {
-                    context.Roles.AddRange(
-                        new Role { NombreRole = "Administrador" },
-                        new Role { NombreRole = "Cliente" }
-                    );
-                    context.SaveChanges();
-                }
                 var tiposProducto = new string[] {"Poleras", "Gorros", "Jugeteria", "Alimentación", "Libros"};
                 if(!context.Productos.Any())
                 {
