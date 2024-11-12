@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Src.Dtos.Autenticacion;
+using api.Src.Interfaces;
 using api.Src.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,9 +15,11 @@ namespace api.Src.Controllers
     public class AutenticacionController : ControllerBase
     {
         private readonly UserManager<UsuarioApp> _userManager;
-        public AutenticacionController(UserManager<UsuarioApp> userManager)
+        private readonly ITokenService _tokenService;
+        public AutenticacionController(UserManager<UsuarioApp> userManager, ITokenService tokenService)
         {
             _userManager = userManager;
+            _tokenService = tokenService;
         }
 
         [HttpPost("Register")]
@@ -44,7 +47,14 @@ namespace api.Src.Controllers
                     var roleCrear = await _userManager.AddToRoleAsync(usuarioApp, "User");
                     if(roleCrear.Succeeded)
                     {
-                        return Ok("¡Usuario creado exitosamente!");
+                        return Ok(
+                            new NuevoUsuarioDto
+                            {
+                                NombreCliente = usuarioApp.UserName!,
+                                Correo = usuarioApp.Email!,
+                                Token = _tokenService.CreateToken(usuarioApp)
+                            }                            
+                            );
                     }
                     else
                     {
