@@ -8,6 +8,8 @@ using api.Src.Helpers;
 using api.Src.Interfaces;
 using api.Src.Mappers;
 using api.Src.Models;
+using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,9 +19,11 @@ namespace api.Src.Controllers
     public class ProductoController : ControllerBase
     {
         private readonly IProductoRepository _productoRepository;
-        public ProductoController(IProductoRepository productoRepository)
+        private readonly Cloudinary _cloudinary;
+        public ProductoController(IProductoRepository productoRepository, Cloudinary cloudinary)
         {
             _productoRepository = productoRepository;
+            _cloudinary = cloudinary;
         }
 
         [HttpGet]
@@ -37,18 +41,50 @@ namespace api.Src.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdProducto([FromRoute] int id)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var producto = await _productoRepository.ObtenerProductoById(id);
             if(producto == null)
             {
                 return NotFound("Producto NO existente.");
             }
-            return Ok(producto.ToGetProductoDto());
+            return Ok(producto);
         }
         [HttpPost]
+        [Consumes("multipart/form-data")]
         public async Task<IActionResult> PostProducto([FromBody] ProductoPostDto postProductoDto)
         {
+            if(postProductoDto.Image == null || postProductoDto.Image.Length == 0)
+            {
+                return BadRequest("Image is required");
+            }
+
+            if (postProductoDto.Image.ContentType != "image/png" && postProductoDto.Image.ContentType != "image/jpeg")
+            {
+                return BadRequest("Only PNG and JPG images are allowed.");
+            }
+
+            if (postProductoDto.Image.Length > 10 * 1024 * 1024)
+            {
+                return BadRequest("Image size must not exceed 10 MB.");
+            }
+
+             var uploadParams = new ImageUploadParams
+            {
+                File = new FileDescription(postProductoDto.Image.FileName, postProductoDto.Image.OpenReadStream()),
+                Folder = "product_images"
+            };
+
+            var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+
+            if (uploadResult.Error != null)
+            {
+                return BadRequest(uploadResult.Error.Message);
+            }
             var newProducto = postProductoDto.ToPostProducto();
-            await _productoRepository.AgregarProducto(newProducto);
+            await _productoRepository.AgregarProducto(newProducto, uploadResult);
             return CreatedAtAction(nameof(GetByIdProducto), new {id = newProducto.IdProducto }, newProducto.ToGetProductoDto());
         }
         [HttpPut]

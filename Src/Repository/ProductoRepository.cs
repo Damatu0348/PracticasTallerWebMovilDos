@@ -7,6 +7,7 @@ using api.Src.Dtos;
 using api.Src.Helpers;
 using api.Src.Interfaces;
 using api.Src.Models;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,8 +20,17 @@ namespace api.Src.Repository
         {
             _context = context;
         }
-        public async Task<Producto> AgregarProducto(Producto producto)
+        public async Task<Producto> AgregarProducto(Producto producto, ImageUploadResult imageUploadResult)
         {
+            var product = new Producto
+            {
+                IdProducto = producto.IdProducto,
+                NombreProducto = producto.NombreProducto,
+                TipoProducto = producto.TipoProducto,
+                StockActual = producto.StockActual,
+                Precio = producto.Precio,
+                ImageUrl = imageUploadResult.SecureUrl.AbsoluteUri
+            };
             await _context.Productos.AddAsync(producto);
             await _context.SaveChangesAsync();
             return producto;

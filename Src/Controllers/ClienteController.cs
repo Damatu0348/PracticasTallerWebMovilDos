@@ -42,6 +42,10 @@ namespace api.Src.Controllers
         [HttpPost]
         public async Task<IActionResult> PostCliente([FromBody] ClientePostDto postClienteDto)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var newCliente = postClienteDto.ToPostClienteDto();
             await _clienteRepository.AgregarCliente(newCliente);
             return CreatedAtAction(nameof(GetByIdCliente), new {id = newCliente.IdCliente}, newCliente.ToGetClienteDto());

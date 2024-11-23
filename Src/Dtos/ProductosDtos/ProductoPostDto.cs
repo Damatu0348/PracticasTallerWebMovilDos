@@ -15,7 +15,8 @@ namespace api.Src.Dtos
         public string NombreProducto { get; set; } = string.Empty;
 
         [Required]
-        [RegularExpression(@"Poleras|Gorros|Jugetería|Alimentación|Libros", ErrorMessage = "El tipo de producto no es válido.")]
+        [RegularExpression("^(Poleras|Gorros|Jugueteria|Alimentacion|Libros)$", 
+        ErrorMessage = "El tipo de producto no es válido. Los valores permitidos son: Poleras, Gorros, Jugueteria, Alimentacion, Libros.")]
         public string TipoProducto { get; set; } = string.Empty;
 
         [Required]
@@ -25,6 +26,9 @@ namespace api.Src.Dtos
         [Required]
         [Range(1, 99999, ErrorMessage = "El stock debe ser un número entero positivo menor que 100000.")]
         public int StockActual { get; set; }
+
+        [Required]
+        public IFormFile Image { get; set; } = null!;
         
     }
 }

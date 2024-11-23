@@ -7,6 +7,7 @@ using api.Src.Interfaces;
 using api.Src.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Src.Controllers
 {
@@ -16,10 +17,12 @@ namespace api.Src.Controllers
     {
         private readonly UserManager<UsuarioApp> _userManager;
         private readonly ITokenService _tokenService;
-        public AutenticacionController(UserManager<UsuarioApp> userManager, ITokenService tokenService)
+        private readonly SignInManager<UsuarioApp> _signInManager;
+        public AutenticacionController(UserManager<UsuarioApp> userManager, ITokenService tokenService, SignInManager<UsuarioApp> signInManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _signInManager = signInManager;
         }
 
         [HttpPost("Register")]
@@ -27,7 +30,10 @@ namespace api.Src.Controllers
         {
             try
             {
-                if(!ModelState.IsValid) return BadRequest(ModelState);
+                if(!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
                 
                 var usuarioApp = new UsuarioApp
                 {
@@ -37,6 +43,7 @@ namespace api.Src.Controllers
                     FechaNacimiento = registerDto.FechaNacimiento,
                     Genero = registerDto.Genero,            
                 };
+                
                 if(string.IsNullOrEmpty(registerDto.Contrasenha))
                 {
                     return BadRequest("La contraseña no DEBE estar vacia.");
@@ -54,8 +61,9 @@ namespace api.Src.Controllers
                                 Correo = usuarioApp.Email!,
                                 Token = _tokenService.CreateToken(usuarioApp)
                             }                            
-                            );
+                        );
                     }
+                    //TODO: crear nuevo cliente para guardar en base de datos cliente
                     else
                     {
                         return StatusCode(500, roleCrear.Errors);
@@ -69,6 +77,41 @@ namespace api.Src.Controllers
             catch(Exception ex)
             {
                 
+                return StatusCode(500, ex.Message);
+            }
+        }
+    
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            try
+            {
+                if(!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var usuarioCorreo = await _userManager.Users.FirstOrDefaultAsync(x => x.Email == loginDto.Correo);
+                if(usuarioCorreo == null)
+                {
+                    return Unauthorized("Correo invalido");
+                }
+                var usuarioContrasenha = await _signInManager.CheckPasswordSignInAsync(usuarioCorreo, loginDto.Contrasenha, false);
+                if(!usuarioContrasenha.Succeeded)
+                {
+                   return Unauthorized("Contraseña incorrecta");
+                }
+                return Ok
+                (
+                    new NuevoUsuarioDto
+                    {
+                        NombreCliente = usuarioCorreo.UserName!,
+                        Correo = usuarioCorreo.Email!,
+                        Token = _tokenService.CreateToken(usuarioCorreo)
+                    }
+                );
+            }
+            catch (Exception ex)
+            {
                 return StatusCode(500, ex.Message);
             }
         }

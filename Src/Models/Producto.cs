@@ -15,7 +15,8 @@ namespace api.Src.Models
         [StringLength(64, MinimumLength = 10, ErrorMessage = "El nombre debe tener entre 10 y 64 caracteres.")]
         public string NombreProducto { get; set; } = string.Empty;
 
-        [RegularExpression(@"Poleras|Gorros|Jugetería|Alimentación|Libros", ErrorMessage = "El tipo de producto no es válido.")]
+        [RegularExpression("^(Poleras|Gorros|Jugueteria|Alimentacion|Libros)$", 
+        ErrorMessage = "El tipo de producto no es válido. Los valores permitidos son: Poleras, Gorros, Jugueteria, Alimentacion, Libros.")]
         public string TipoProducto { get; set; } = string.Empty;
 
         [Range(1, 99999999, ErrorMessage = "El dinero debe ser un número entero positivo menor que 100 millones.")]
@@ -23,6 +24,8 @@ namespace api.Src.Models
 
         [Range(1, 99999, ErrorMessage = "El stock debe ser un número entero positivo menor que 100000.")]
         public int StockActual { get; set; }
+
+        public string ImageUrl { get; set; } = string.Empty;
 
         public List<Cliente> Clientes {get; set;} = [];
     }

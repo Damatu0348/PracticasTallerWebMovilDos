@@ -28,5 +28,7 @@ namespace api.Src.Dtos
         [Required]
         [Range(1, 99999, ErrorMessage = "El stock debe ser un número entero positivo menor que 100000.")]
         public int StockActual { get; set; }
+        [Required]
+        public IFormFile Image { get; set; } = null!;
     }
 }

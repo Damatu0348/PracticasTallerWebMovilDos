@@ -15,6 +15,7 @@ namespace api.Src.Data
         {
             
         }
+        //public DbSet<User> Users { get; set; } = null!;
         public DbSet<Cliente> Clientes { get; set; } = null!;
         public DbSet<Producto> Productos { get; set; } = null!;
 

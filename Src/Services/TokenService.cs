@@ -19,8 +19,9 @@ namespace api.Src.Services
         public TokenService(IConfiguration config)
         {
             _config = config;
-            var signingKey = _config["JWT:SigningKey"];
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey));
+            string signingKey = _config["JWT:SigningKey"] ?? throw new Exception();
+            byte[] key = Encoding.UTF8.GetBytes(signingKey) ?? throw new Exception();
+            _key = new SymmetricSecurityKey(key);
         }
         public string CreateToken(UsuarioApp usuario)
         {
@@ -30,7 +31,7 @@ namespace api.Src.Services
                 new Claim(JwtRegisteredClaimNames.GivenName, usuario.UserName ?? throw new ArgumentNullException(nameof(usuario.UserName), "User name cannot be null"))
             };
 
-             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
