@@ -57,13 +57,12 @@ namespace api.Src.Controllers
                         return Ok(
                             new NuevoUsuarioDto
                             {
-                                NombreCliente = usuarioApp.UserName!,
-                                Correo = usuarioApp.Email!,
+                                NombreCliente = usuarioApp.UserName,
+                                Correo = usuarioApp.Email,
                                 Token = _tokenService.CreateToken(usuarioApp)
                             }                            
                         );
                     }
-                    //TODO: crear nuevo cliente para guardar en base de datos cliente
                     else
                     {
                         return StatusCode(500, roleCrear.Errors);

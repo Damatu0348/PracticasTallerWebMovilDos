@@ -9,16 +9,16 @@ namespace api.Src.Dtos.Autenticacion
     public class RegisterDto
     {
         [Required]
-        public string? NombreCliente {get; set;} = null!;
+        public string NombreCliente {get; set;} = null!;
         [Required]
-        public string? Rut {get; set;} = null!;
+        public string Rut {get; set;} = null!;
         [Required]
         [EmailAddress]
-        public string? Correo {get; set;} = null!;
+        public string Correo {get; set;} = null!;
         [Required]
-        public string? FechaNacimiento {get; set;} = null!;
+        public string FechaNacimiento {get; set;} = null!;
         [Required]
-        public string? Genero {get; set;} = null!;
+        public string Genero {get; set;} = null!;
         [Required]
         [MinLength(8)]
         public string? Contrasenha {get; set;} = null!;

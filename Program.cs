@@ -104,7 +104,8 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDBContext>();
-    DataSeeder.Initialize(services);
+    var userManager = services.GetRequiredService<UserManager<UsuarioApp>>();
+    DataSeeder.Initialize(services, userManager);
 }
 
 

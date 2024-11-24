@@ -15,7 +15,7 @@ namespace api.Src.Data
         {
             
         }
-        //public DbSet<User> Users { get; set; } = null!;
+        public DbSet<UsuarioApp> Usuarios { get; set; } = null!;
         public DbSet<Cliente> Clientes { get; set; } = null!;
         public DbSet<Producto> Productos { get; set; } = null!;
 
@@ -31,7 +31,5 @@ namespace api.Src.Data
             };
             modelBuilder.Entity<IdentityRole>().HasData(roles);
         }
-
-        //public DbSet<Role> Roles {get; set;} = null!;
     }
 }

@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Src.Models;
 using Bogus;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Src.Data
 {
     public class DataSeeder
     {
         private static Random random = new Random();
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async void Initialize(IServiceProvider serviceProvider, UserManager<UsuarioApp> userManager)
         {
-            
             using (var scope = serviceProvider.CreateScope())
             {
                 var services = scope.ServiceProvider;
@@ -32,14 +32,20 @@ namespace api.Src.Data
                     context.Productos.AddRange(products);
                     context.SaveChanges();
                 }
-                /*
+                
+                
                 var admin = new UsuarioApp
                 {
-                    ...
-                }
-                */
-                //context.Users.Add(admin);
+                    Rut = "20.416.699-4.",
+                    NombreCliente = "Ignacio Mancilla",
+                    FechaNacimiento = "2000-10-25",
+                    Correo = "admin@idwm.cl",
+                    Genero = "Masculino",
+                    Contrasenha = "P4ssw0rd"
+                };     
                 
+                _ = await userManager.CreateAsync(admin, "P4ssw0rd");
+                _ = await userManager.AddToRoleAsync(admin, "Admin"); 
                 context.SaveChanges();
             }
         }

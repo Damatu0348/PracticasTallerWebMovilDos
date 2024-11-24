@@ -25,7 +25,15 @@ namespace api.Src.Controllers
             _productoRepository = productoRepository;
             _cloudinary = cloudinary;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="queryProducto">
+        /// 
+        /// </param>
+        /// <returns>
+        /// 
+        /// </returns>
         [HttpGet]
         public async Task<IActionResult> GetProductos([FromQuery] QueryProducto queryProducto)
         {
