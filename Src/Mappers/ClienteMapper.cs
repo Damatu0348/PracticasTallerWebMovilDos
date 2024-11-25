@@ -9,6 +9,11 @@ namespace api.Src.Mappers
 {
     public static class ClienteMapper
     {
+        /// <summary>
+        /// Moldeo para cliente en metodos HttpGet
+        /// </summary>
+        /// <param name="clienteDisplay">el cliente a mostrar</param>
+        /// <returns>un nuevo molde de clienteGet</returns>
         public static ClienteGetDto ToGetClienteDto(this Cliente clienteDisplay)
         {
             return new ClienteGetDto
@@ -23,6 +28,11 @@ namespace api.Src.Mappers
             };
         }
 
+        /// <summary>
+        /// Moldeo para cliente en metodos HttpPost
+        /// </summary>
+        /// <param name="createNewClienteDto">molde para el nuevo cliente a agregar</param>
+        /// <returns>un cliente a añadir</returns>
         public static Cliente ToPostClienteDto(this ClientePostDto createNewClienteDto)
         {
             return new Cliente

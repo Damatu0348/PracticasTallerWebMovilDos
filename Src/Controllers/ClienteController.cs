@@ -21,6 +21,10 @@ namespace api.Src.Controllers
             _clienteRepository = clienteRepository;
         }
 
+        /// <summary>
+        /// Metodo Http para obtener todos los clientes
+        /// </summary>
+        /// <returns>ok al desplegar todos los clientes</returns>
         [HttpGet]
         public async Task<IActionResult> GetClientes()
         {
@@ -29,6 +33,11 @@ namespace api.Src.Controllers
             return Ok(clientes);
         }
 
+        /// <summary>
+        /// Metodo Http para obtener un cliente por un id ingresado
+        /// </summary>
+        /// <param name="id">id del cliente a buscar</param>
+        /// <returns>ok al encontrar el cliente, Not found de lo contrario</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdCliente([FromRoute] int id)
         {
@@ -39,6 +48,12 @@ namespace api.Src.Controllers
             }            
             return Ok(cliente.ToGetClienteDto());
         }
+
+        /// <summary>
+        /// Metodo Http para agregar un nuevo cliente
+        /// </summary>
+        /// <param name="postClienteDto">modelado para agregar un nuevo cliente</param>
+        /// <returns>CreateAtAction si se agrego exitosamento, bad request de lo contrario</returns>
         [HttpPost]
         public async Task<IActionResult> PostCliente([FromBody] ClientePostDto postClienteDto)
         {
@@ -50,6 +65,13 @@ namespace api.Src.Controllers
             await _clienteRepository.AgregarCliente(newCliente);
             return CreatedAtAction(nameof(GetByIdCliente), new {id = newCliente.IdCliente}, newCliente.ToGetClienteDto());
         }
+
+        /// <summary>
+        /// Metodo Http para modificar los datos de un producto con id coincidente a uno ingresado
+        /// </summary>
+        /// <param name="id">id del cliente a modificar sus datos</param>
+        /// <param name="putClienteDto">modelado de datos a modificar de cliente</param>
+        /// <returns>ok al modificar exitosamente, Not found si no existe el id</returns>
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClienteIdAsync([FromRoute] int id, [FromBody] ClientePutDto putClienteDto)
         {
@@ -62,6 +84,11 @@ namespace api.Src.Controllers
 
         }
 
+        /// <summary>
+        /// Metodo Http para eliminar un cliente con id coincidente a uno ingresado
+        /// </summary>
+        /// <param name="id">id del cliente a eliminar</param>
+        /// <returns>No content al eliminar correctamente, Not found si no existe el id</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClienteId([FromRoute] int id)
         {

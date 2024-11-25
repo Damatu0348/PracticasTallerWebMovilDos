@@ -18,6 +18,12 @@ namespace api.Src.Controllers
         private readonly UserManager<UsuarioApp> _userManager;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<UsuarioApp> _signInManager;
+        /// <summary>
+        /// Constructor de autenticacion COntroller
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="tokenService"></param>
+        /// <param name="signInManager"></param>
         public AutenticacionController(UserManager<UsuarioApp> userManager, ITokenService tokenService, SignInManager<UsuarioApp> signInManager)
         {
             _userManager = userManager;
@@ -25,6 +31,11 @@ namespace api.Src.Controllers
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// Metodo que registra un nuevo usuario en el sistema
+        /// </summary>
+        /// <param name="registerDto">el modelo de registro del usuario a ingresar</param>
+        /// <returns>Ok si se registro exitosamente, error 500 de lo contrario</returns>
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
@@ -80,6 +91,11 @@ namespace api.Src.Controllers
             }
         }
     
+        /// <summary>
+        /// Metodo para ingresar a sesion o Logearse como usuario existente en el sistema
+        /// </summary>
+        /// <param name="loginDto">modelo de inicio de sesion para usuario</param>
+        /// <returns>Ok si se pudo logear con exito, error 500 de lo contrario</returns>
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {

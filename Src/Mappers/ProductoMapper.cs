@@ -9,6 +9,11 @@ namespace api.Src.Mappers
 {
     public static class ProductoMapper
     {
+        /// <summary>
+        /// Moldeo para producto en metodos HttpGet
+        /// </summary>
+        /// <param name="productoDisplay">el producto a mostrar</param>
+        /// <returns>un nuevo molde de productoGet</returns>
         public static ProductoGetDto ToGetProductoDto(this Producto productoDisplay)
         {
             return new ProductoGetDto
@@ -20,6 +25,11 @@ namespace api.Src.Mappers
             };
         }
 
+        /// <summary>
+        /// Moldeo para producto en metodos HttpPost
+        /// </summary>
+        /// <param name="createNewProductoDto">molde para el nuevo producto a agregar</param>
+        /// <returns>un producto a añadir</returns>
         public static Producto ToPostProducto(this ProductoPostDto createNewProductoDto)
         {
             return new Producto

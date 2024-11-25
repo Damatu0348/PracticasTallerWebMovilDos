@@ -9,6 +9,11 @@ namespace api.Src.Mappers
 {
     public static class UsuarioMapper
     {
+        /// <summary>
+        /// Moldeo para usuario en metodos HttpGet
+        /// </summary>
+        /// <param name="usuarioDisplay">el usuario a mostrar</param>
+        /// <returns>un nuevo molde de usuarioGet</returns>
         public static UsuarioGetDto ToGetUsuarioDto(this UsuarioApp usuarioDisplay)
         {
             return new UsuarioGetDto
@@ -23,6 +28,11 @@ namespace api.Src.Mappers
             };
         }
 
+        /// <summary>
+        /// Moldeo para usuario en metodos HttpPost
+        /// </summary>
+        /// <param name="createNewUsuarioDto">molde para el nuevo usuario a agregar</param>
+        /// <returns>un usuario a añadir</returns>
         public static UsuarioApp ToPostUsuarioDto(this UsuarioPostDto createNewUsuarioDto)
         {
             return new UsuarioApp

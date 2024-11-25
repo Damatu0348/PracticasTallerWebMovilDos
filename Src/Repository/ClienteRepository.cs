@@ -13,11 +13,21 @@ namespace api.Src.Repository
     public class ClienteRepository : IClienteRepository
     {
         private readonly ApplicationDBContext _context;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public ClienteRepository(ApplicationDBContext context)
         {
             _context = context;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cliente"></param>
+        /// <returns></returns>
         public async Task<Cliente> AgregarCliente(Cliente cliente)
         {
             await _context.Clientes.AddAsync(cliente);
@@ -25,6 +35,12 @@ namespace api.Src.Repository
             return cliente;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="idEliminar"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<Cliente?> EliminarClienteById(int idEliminar)
         {
             var modeloCliente = await _context.Clientes.FirstOrDefaultAsync(c => c.IdCliente == idEliminar);
@@ -37,6 +53,13 @@ namespace api.Src.Repository
             return modeloCliente;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="clienteDto"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task<Cliente?> ModificarCliente(int id, ClientePutDto clienteDto)
         {
             var modeloCliente = await _context.Clientes.FirstOrDefaultAsync(c => c.IdCliente == id);
@@ -54,11 +77,20 @@ namespace api.Src.Repository
             return modeloCliente;
         }
 
+        /// <summary>
+        /// Metodo para obtener un client epor medio de un id
+        /// </summary>
+        /// <param name="id">id del lciente a obtener</param>
+        /// <returns>el cliente con el id a buscar</returns>
         public async Task<Cliente?> ObtenerClienteById(int id)
         {
             return await _context.Clientes.FindAsync(id);
         }
 
+        /// <summary>
+        /// Metodo para obtener todos los clientes
+        /// </summary>
+        /// <returns>lista de todos los clientes</returns>
         public async Task<List<Cliente>> ObtenerTodosLosClientes()
         {
             return await _context.Clientes.ToListAsync();

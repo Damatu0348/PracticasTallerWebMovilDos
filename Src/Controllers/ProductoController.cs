@@ -26,13 +26,13 @@ namespace api.Src.Controllers
             _cloudinary = cloudinary;
         }
         /// <summary>
-        /// 
+        /// Metodo HttpGet para obtener todos los productos del sistema
         /// </summary>
         /// <param name="queryProducto">
-        /// 
+        /// una consulta para los productos
         /// </param>
         /// <returns>
-        /// 
+        /// ok si se realiza con exito el despliegue, Bad request de lo contrario
         /// </returns>
         [HttpGet]
         public async Task<IActionResult> GetProductos([FromQuery] QueryProducto queryProducto)
@@ -46,6 +46,11 @@ namespace api.Src.Controllers
             return Ok(productoDto);
         }
 
+        /// <summary>
+        /// Metodo Http para obtener un producto por un id ingresado
+        /// </summary>
+        /// <param name="id">id del producto a buscar</param>
+        /// <returns>ok al encontrar el producto, Bad request de lo contrario</returns>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdProducto([FromRoute] int id)
         {
@@ -60,6 +65,12 @@ namespace api.Src.Controllers
             }
             return Ok(producto);
         }
+
+        /// <summary>
+        /// Metodo HttpPost para agregar un nuevo producto
+        /// </summary>
+        /// <param name="postProductoDto">modelado para crear un nuevo producto</param>
+        /// <returns>CeateAtAction si se creo exitosament, BadRequest de lo contrario</returns>
         [HttpPost]
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> PostProducto([FromBody] ProductoPostDto postProductoDto)
@@ -95,6 +106,13 @@ namespace api.Src.Controllers
             await _productoRepository.AgregarProducto(newProducto, uploadResult);
             return CreatedAtAction(nameof(GetByIdProducto), new {id = newProducto.IdProducto }, newProducto.ToGetProductoDto());
         }
+
+        /// <summary>
+        /// Metodo HttpPut para modificar datos de un producto con id coincidente a uno ingresado
+        /// </summary>
+        /// <param name="id">id del producto a modificar</param>
+        /// <param name="putProductoDto">modelado del producto a modificar</param>
+        /// <returns>Ok si se modifico exitosamente, Bad request de lo contrario</returns>
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> PutProductoId([FromRoute] int id, [FromBody] ProductoPutDto putProductoDto)
@@ -107,6 +125,11 @@ namespace api.Src.Controllers
             return Ok(modeloProductoModificar.ToGetProductoDto());
         }
 
+        /// <summary>
+        /// Metodo HttpDelete para eliminar un producto con el id coincidente a uno ingresado
+        /// </summary>
+        /// <param name="id">id del producto a eliminar</param>
+        /// <returns>No content si se elimino con exito, Not Found de lo contrario</returns>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductoId([FromRoute] int id)
         {
