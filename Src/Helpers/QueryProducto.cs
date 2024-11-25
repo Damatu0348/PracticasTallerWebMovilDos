@@ -8,6 +8,7 @@ namespace api.Src.Helpers
     public class QueryProducto
     {
         public string? TipoProducto {get; set;} = string.Empty;
+        public string? SortBy {get; set;} = null;
         public bool IsDescendiente {get; set;} = false;
     }
 }

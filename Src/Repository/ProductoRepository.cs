@@ -99,7 +99,7 @@ namespace api.Src.Repository
         }
 
         /// <summary>
-        /// Metodo par aobtener todos los productos
+        /// Metodo para obtener todos los productos
         /// 
         /// </summary>
         /// <param name="queryProducto">consulta para ayudar en la busqueda</param>
@@ -111,6 +111,14 @@ namespace api.Src.Repository
             {
                 productos = productos.Where(p => p.TipoProducto.Contains(queryProducto.TipoProducto));
             }
+            if(!string.IsNullOrWhiteSpace(queryProducto.SortBy))
+            {
+                if(queryProducto.SortBy.Equals("Precio", StringComparison.OrdinalIgnoreCase))
+                {
+                    productos = queryProducto.IsDescendiente ? productos.OrderByDescending(p => p.Precio) : productos.OrderBy(p => p.Precio);
+                }
+            }
+
             return await productos.ToListAsync();
         }
     }
