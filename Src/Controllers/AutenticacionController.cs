@@ -51,7 +51,7 @@ namespace api.Src.Controllers
                     UserName = registerDto.NombreCliente,
                     Rut = registerDto.Rut,
                     Email = registerDto.Correo,
-                    FechaNacimiento = registerDto.FechaNacimiento,
+                    BirthDate = registerDto.FechaNacimiento,
                     Genero = registerDto.Genero,            
                 };
                 

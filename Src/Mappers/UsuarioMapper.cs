@@ -20,11 +20,11 @@ namespace api.Src.Mappers
             {
                 IdCliente = usuarioDisplay.IdCliente,
                 Rut = usuarioDisplay.Rut,
-                NombreCliente = usuarioDisplay.NombreCliente,
-                FechaNacimiento = usuarioDisplay.FechaNacimiento,
-                Correo = usuarioDisplay.Correo,
+                Name = usuarioDisplay.Name,
+                BirthDate = usuarioDisplay.BirthDate,
+                Email = usuarioDisplay.Email,
                 Genero = usuarioDisplay.Genero,
-                Contrasenha = usuarioDisplay.Contrasenha
+                Password = usuarioDisplay.Password
             };
         }
 
@@ -38,11 +38,11 @@ namespace api.Src.Mappers
             return new UsuarioApp
             {
                 Rut = createNewUsuarioDto.Rut,
-                NombreCliente = createNewUsuarioDto.NombreCliente,
-                FechaNacimiento = createNewUsuarioDto.FechaNacimiento,
-                Correo = createNewUsuarioDto.Correo,
+                Name = createNewUsuarioDto.Name,
+                BirthDate = createNewUsuarioDto.BirthDate,
+                Email = createNewUsuarioDto.Email,
                 Genero = createNewUsuarioDto.Genero,
-                Contrasenha = createNewUsuarioDto.Contrasenha
+                Password = createNewUsuarioDto.Password
             };
         }
     }

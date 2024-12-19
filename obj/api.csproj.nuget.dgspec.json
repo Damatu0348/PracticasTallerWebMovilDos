@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\damat\\Desktop\\Talleres intro web movil\\TallerDos\\api\\api.csproj": {}
+    "D:\\Talleres intro web movil\\TallerDos\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\damat\\Desktop\\Talleres intro web movil\\TallerDos\\api\\api.csproj": {
+    "D:\\Talleres intro web movil\\TallerDos\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\damat\\Desktop\\Talleres intro web movil\\TallerDos\\api\\api.csproj",
+        "projectUniqueName": "D:\\Talleres intro web movil\\TallerDos\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\Users\\damat\\Desktop\\Talleres intro web movil\\TallerDos\\api\\api.csproj",
+        "projectPath": "D:\\Talleres intro web movil\\TallerDos\\api\\api.csproj",
         "packagesPath": "C:\\Users\\damat\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\damat\\Desktop\\Talleres intro web movil\\TallerDos\\api\\obj\\",
+        "outputPath": "D:\\Talleres intro web movil\\TallerDos\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\damat\\AppData\\Roaming\\NuGet\\NuGet.Config",

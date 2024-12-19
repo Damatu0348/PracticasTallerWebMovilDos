@@ -62,11 +62,11 @@ namespace api.Src.Repository
                 throw new Exception("Producto NO encontrado.");
             }
             modeloUsuario.Rut = usuarioDto.Rut;
-            modeloUsuario.NombreCliente = usuarioDto.NombreCliente;
-            modeloUsuario.FechaNacimiento = usuarioDto.FechaNacimiento;
-            modeloUsuario.Correo = usuarioDto.Correo;
+            modeloUsuario.Name = usuarioDto.Name;
+            modeloUsuario.BirthDate = usuarioDto.BirthDate;
+            modeloUsuario.Email = usuarioDto.Email;
             modeloUsuario.Genero = usuarioDto.Genero;
-            modeloUsuario.Contrasenha = usuarioDto.Contrasenha;
+            modeloUsuario.Password = usuarioDto.Password;
             await _context.SaveChangesAsync();
             return modeloUsuario;
         }

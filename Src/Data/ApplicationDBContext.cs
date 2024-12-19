@@ -20,6 +20,8 @@ namespace api.Src.Data
         public DbSet<Producto> Productos { get; set; } = null!;
 
         //Opcion de Seeder
+
+        /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -31,5 +33,6 @@ namespace api.Src.Data
             };
             modelBuilder.Entity<IdentityRole>().HasData(roles);
         }
+        */
     }
 }

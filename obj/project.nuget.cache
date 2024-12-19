@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Q6LhcRWlp18=",
+  "dgSpecHash": "mXYAqXmEnuc=",
   "success": true,
-  "projectFilePath": "C:\\Users\\damat\\Desktop\\Talleres intro web movil\\TallerDos\\api\\api.csproj",
+  "projectFilePath": "D:\\Talleres intro web movil\\TallerDos\\api\\api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\damat\\.nuget\\packages\\bogus\\35.6.1\\bogus.35.6.1.nupkg.sha512",
     "C:\\Users\\damat\\.nuget\\packages\\cloudinarydotnet\\1.26.2\\cloudinarydotnet.1.26.2.nupkg.sha512",

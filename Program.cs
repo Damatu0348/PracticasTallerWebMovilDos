@@ -33,6 +33,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddIdentity<UsuarioApp, IdentityRole>(
@@ -104,8 +105,8 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDBContext>();
-    var userManager = services.GetRequiredService<UserManager<UsuarioApp>>();
-    DataSeeder.Initialize(services, userManager);
+    await context.Database.MigrateAsync();
+    DataSeeder.Initialize(services);
 }
 
 

@@ -12,18 +12,18 @@ namespace api.Src.Dtos.UsuariosDto
         public string Rut { get; set; } = string.Empty;
         
         [Required]
-        public string NombreCliente { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
         
         [Required]
-        public string FechaNacimiento { get; set; } = string.Empty;
+        public string BirthDate { get; set; } = string.Empty;
 
         [Required]
-        public string Correo { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
 
         [Required]
         public string Genero { get; set; } = string.Empty;
 
         [Required]
-        public string Contrasenha { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }
